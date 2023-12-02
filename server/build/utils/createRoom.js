@@ -10,12 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createRoom = exports.REQUEST_ROOM_FROM_ID = void 0;
-exports.REQUEST_ROOM_FROM_ID = 'SELECT name,description,owner_user_id FROM rooms WHERE id = ? LIMIT 1';
+const randomString_1 = require("./randomString");
+exports.REQUEST_ROOM_FROM_ID = 'SELECT name,description,owner_user_id,site_string_id FROM rooms WHERE id = ? LIMIT 1';
 const createRoom = (data, userId, db, io) => __awaiter(void 0, void 0, void 0, function* () {
     let createdRoomId;
     let roomData;
     try {
-        const resultId = yield db.run('INSERT INTO rooms (name, owner_user_id, description) VALUES (?,?,?)', [data.name, userId, data.description]);
+        const resultId = yield db.run('INSERT INTO rooms (name, owner_user_id, description,site_string_id) VALUES (?,?,?,?)', [data.name, userId, data.description, (0, randomString_1.generateRandomString)(5)]);
         createdRoomId = resultId.lastID;
         yield db.run('INSERT INTO rooms_users (room_id, room_id) VALUES (?,?)', [createdRoomId, userId]);
     }

@@ -31,6 +31,7 @@ async function main() {
     })
 
     io.on('connection', (socket) => {
+        console.log('user connected')
         socket.on('createRoom', async (data: RoomCreationData) => {
             await createUser(data.user_name, db, io).then(async (userID) => {
                 if (userID) {

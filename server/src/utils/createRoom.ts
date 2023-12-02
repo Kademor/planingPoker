@@ -1,5 +1,7 @@
+import { generateRandomString } from './randomString'
+
 export const REQUEST_ROOM_FROM_ID =
-    'SELECT name,description,owner_user_id FROM rooms WHERE id = ? LIMIT 1'
+    'SELECT name,description,owner_user_id,site_string_id FROM rooms WHERE id = ? LIMIT 1'
 
 export type RoomCreationData = {
     name: string
@@ -16,8 +18,8 @@ export const createRoom = async (
     let roomData
     try {
         const resultId = await db.run(
-            'INSERT INTO rooms (name, owner_user_id, description) VALUES (?,?,?)',
-            [data.name, userId, data.description]
+            'INSERT INTO rooms (name, owner_user_id, description,site_string_id) VALUES (?,?,?,?)',
+            [data.name, userId, data.description, generateRandomString(5)]
         )
         createdRoomId = resultId.lastID
         await db.run(

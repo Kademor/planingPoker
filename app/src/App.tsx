@@ -1,35 +1,13 @@
-import { useState, useEffect } from 'react'
-import { socket } from './socket'
-import RoomInit from './components/Room/RoomInit.tsx'
+import RoomInit from './components/Room/RoomInit/RoomInit.tsx'
+import { Route, Routes } from 'react-router'
+import Room from './components/Room'
+import { useContent } from './components/Context'
+import { useEffect, useState } from 'react'
+import { socket } from './socket.ts'
 
 export default function App() {
+    const { context, setContext } = useContent()
     const [isConnected, setIsConnected] = useState(socket.connected)
-    const [fooEvents, setFooEvents] = useState([])
-
-    useEffect(() => {
-        // function onConnect() {
-        //     setIsConnected(true);
-        // }
-        //
-        // function onDisconnect() {
-        //     setIsConnected(false);
-        // }
-        //
-        // function onFooEvent(value) {
-        //     setFooEvents(previous => [...previous, value]);
-        // }
-        //
-        // socket.on('connect', onConnect);
-        // socket.on('disconnect', onDisconnect);
-        // socket.on('foo', onFooEvent);
-        //
-        // return () => {
-        //     socket.off('connect', onConnect);
-        //     socket.off('disconnect', onDisconnect);
-        //     socket.off('foo', onFooEvent);
-        // };
-    }, [])
-
     useEffect(() => {
         if (!isConnected) {
             socket.connect()
@@ -38,7 +16,11 @@ export default function App() {
 
     return (
         <div className="App">
-            <RoomInit />
+            <Routes>
+                <Route index element={<RoomInit />} />
+                <Route path="/room/*" element={<Room />} />
+            </Routes>
+
             {/*<ConnectionState isConnected={ isConnected } />*/}
             {/*<Events events={ fooEvents } />*/}
             {/*<ConnectionManager />*/}

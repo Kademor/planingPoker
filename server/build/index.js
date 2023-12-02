@@ -38,6 +38,7 @@ function main() {
             console.log('i like trains');
         });
         io.on('connection', (socket) => {
+            console.log('user connected');
             socket.on('createRoom', (data) => __awaiter(this, void 0, void 0, function* () {
                 yield (0, createUser_1.createUser)(data.user_name, db, io).then((userID) => __awaiter(this, void 0, void 0, function* () {
                     if (userID) {

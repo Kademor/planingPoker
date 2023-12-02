@@ -27,10 +27,13 @@ CREATE TABLE storys (
 
 CREATE TABLE rooms (
     id INTEGER PRIMARY KEY,
+    site_string_id TEXT NOT NULL,
     name TEXT NOT NULL,
     owner_user_id INTEGER NOT NULL,
+    active_story_id INTEGER,
     description TEXT,
-    FOREIGN KEY(owner_user_id) REFERENCES rooms(id)
+    FOREIGN KEY(owner_user_id) REFERENCES rooms(id),
+    FOREIGN KEY(active_story_id) REFERENCES storys(id)
 );
 
 CREATE TABLE rooms_users (
