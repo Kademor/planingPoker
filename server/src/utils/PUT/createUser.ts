@@ -1,7 +1,6 @@
-import { generateRandomString } from './randomString'
+import { generateRandomString } from '../randomString'
+import { REQUEST_LATEST_USER_CREATED } from '../../const/queries'
 
-const REQUEST_LATEST_USER_CREATED =
-    'SELECT name,cookie FROM users WHERE id = ? LIMIT 1'
 export const createUser = async (
     userName: string,
     db: any,

@@ -17,8 +17,8 @@ const socket_io_1 = require("socket.io");
 const sqlite_1 = require("sqlite");
 const express_1 = __importDefault(require("express"));
 const sqlite3_1 = require("sqlite3");
-const createUser_1 = require("./utils/createUser");
-const createRoom_1 = require("./utils/createRoom");
+const createRoom_1 = require("./utils/PUT/createRoom");
+const requestRoom_1 = require("./utils/GET/requestRoom");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, sqlite_1.open)({
@@ -39,13 +39,15 @@ function main() {
         });
         io.on('connection', (socket) => {
             console.log('user connected');
-            socket.on('createRoom', (data) => __awaiter(this, void 0, void 0, function* () {
-                yield (0, createUser_1.createUser)(data.user_name, db, io).then((userID) => __awaiter(this, void 0, void 0, function* () {
-                    if (userID) {
-                        yield (0, createRoom_1.createRoom)(data, userID, db, io);
-                    }
-                }));
-            }));
+            const data = {
+                socket: socket,
+                db: db,
+                io: io,
+            };
+            //PUTS
+            (0, createRoom_1.createRoomPUT)(data);
+            //GETS
+            (0, requestRoom_1.requestRoomGET)(data);
         });
         server.listen(3000, () => {
             console.log('server running at http://localhost:3000');

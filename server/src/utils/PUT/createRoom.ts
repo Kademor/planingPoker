@@ -1,9 +1,10 @@
-import { generateRandomString } from './randomString'
+import { generateRandomString } from '../randomString'
+import { REQUEST_ROOM_FROM_ID } from '../../const/queries'
+import { createUser } from './createUser'
+import { TWithSocketData } from '../../types'
+import { CREATE_ROOM, CREATED_ROOM } from '../../const/events'
 
-export const REQUEST_ROOM_FROM_ID =
-    'SELECT name,description,owner_user_id,site_string_id FROM rooms WHERE id = ? LIMIT 1'
-
-export type RoomCreationData = {
+type RoomCreationData = {
     name: string
     user_name: string
     description: string
@@ -35,6 +36,15 @@ export const createRoom = async (
         roomData = rows[0]
     })
 
-    console.log('created room : ', roomData)
-    io.emit('createdRoom', roomData)
+    io.emit(CREATED_ROOM, roomData)
+}
+
+export const createRoomPUT = ({ socket, db, io }: TWithSocketData) => {
+    socket.on(CREATE_ROOM, async (data: RoomCreationData) => {
+        await createUser(data.user_name, db, io).then(async (userID) => {
+            if (userID) {
+                await createRoom(data, userID, db, io)
+            }
+        })
+    })
 }

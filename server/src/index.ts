@@ -3,11 +3,9 @@ import { Server } from 'socket.io'
 import { open } from 'sqlite'
 import express from 'express'
 import { Database } from 'sqlite3'
-import { randomBytes } from 'crypto'
-import { generateRandomString } from './utils/randomString'
-import { createUser } from './utils/createUser'
-import { createRoom, RoomCreationData } from './utils/createRoom'
-
+import { createRoomPUT } from './utils/PUT/createRoom'
+import { TWithSocketData } from './types'
+import { requestRoomGET } from './utils/GET/requestRoom'
 async function main() {
     const db = await open({
         filename: './database/planningPoker.db',
@@ -32,13 +30,15 @@ async function main() {
 
     io.on('connection', (socket) => {
         console.log('user connected')
-        socket.on('createRoom', async (data: RoomCreationData) => {
-            await createUser(data.user_name, db, io).then(async (userID) => {
-                if (userID) {
-                    await createRoom(data, userID, db, io)
-                }
-            })
-        })
+        const data: TWithSocketData = {
+            socket: socket,
+            db: db,
+            io: io,
+        }
+        //PUTS
+        createRoomPUT(data)
+        //GETS
+        requestRoomGET(data)
     })
 
     server.listen(3000, () => {

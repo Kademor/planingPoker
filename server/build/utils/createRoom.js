@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createRoom = exports.REQUEST_ROOM_FROM_ID = void 0;
+exports.createRoom = void 0;
 const randomString_1 = require("./randomString");
-exports.REQUEST_ROOM_FROM_ID = 'SELECT name,description,owner_user_id,site_string_id FROM rooms WHERE id = ? LIMIT 1';
+const queries_1 = require("../const/queries");
 const createRoom = (data, userId, db, io) => __awaiter(void 0, void 0, void 0, function* () {
     let createdRoomId;
     let roomData;
@@ -24,7 +24,7 @@ const createRoom = (data, userId, db, io) => __awaiter(void 0, void 0, void 0, f
         console.error('Error while trying to create room : ', e);
         return undefined;
     }
-    yield db.all(exports.REQUEST_ROOM_FROM_ID, createdRoomId).then((rows) => {
+    yield db.all(queries_1.REQUEST_ROOM_FROM_ID, createdRoomId).then((rows) => {
         roomData = rows[0];
     });
     console.log('created room : ', roomData);

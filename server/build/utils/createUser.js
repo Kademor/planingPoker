@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createUser = void 0;
 const randomString_1 = require("./randomString");
-const REQUEST_LATEST_USER_CREATED = 'SELECT name,cookie FROM users WHERE id = ? LIMIT 1';
+const queries_1 = require("../const/queries");
 const createUser = (userName, db, io) => __awaiter(void 0, void 0, void 0, function* () {
     let resultId;
     try {
@@ -23,7 +23,7 @@ const createUser = (userName, db, io) => __awaiter(void 0, void 0, void 0, funct
         return undefined;
     }
     let userData;
-    yield db.all(REQUEST_LATEST_USER_CREATED, resultId).then((rows) => {
+    yield db.all(queries_1.REQUEST_LATEST_USER_CREATED, resultId).then((rows) => {
         userData = rows[0];
     });
     console.log('created user : ', userName);

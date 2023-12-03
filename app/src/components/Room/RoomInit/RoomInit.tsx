@@ -3,9 +3,7 @@ import { socket } from '../../../socket.ts'
 import { Socket } from 'socket.io-client'
 import { handleNewUser } from '../../../utils/user.ts'
 import { RoomInitFormContainer } from './style.ts'
-import { useContent } from '../../Context'
 import { TRoomInit } from '../../../types/socketTypes.ts'
-import { checkAndRedirectToRoom } from '../../../utils'
 import { useNavigate } from 'react-router'
 const RoomInit = () => {
     const navigate = useNavigate()
@@ -20,15 +18,19 @@ const RoomInit = () => {
         formData.forEach((value, key) => {
             formDataObject[key] = value
         })
-        socket.emit('createRoom', formDataObject)
-        socket.on('createdUser', (data) => handleNewUser(data, socket))
         socket.on('createdRoom', (data) => handleRoomCreation(data, socket))
+        socket.emit('createRoom', formDataObject)
     }
 
-    const handleRoomCreation = (data: TRoomInit, socket: Socket) => {
-        navigate(`/room/${data.site_string_id}`)
+    const handleRoomCreation = (room: TRoomInit, socket: Socket) => {
+        handleNewUser(
+            { roomName: room.site_string_id, cookie: room.user_cookie },
+            socket
+        )
+        navigate(`/room/${room.site_string_id}`)
         socket.off('createdRoom')
     }
+
     return (
         <RoomInitFormContainer>
             <h2>Create your room!</h2>
