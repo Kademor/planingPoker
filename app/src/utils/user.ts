@@ -17,3 +17,8 @@ export const handleNewUser = (data: NewUserSocketReturn, socket?: Socket) => {
 
     console.log('created new cookie for :', data)
 }
+
+export const getUserForRoomFromCookies = (roomCode: string) => {
+    const cookies = new Cookies()
+    return cookies.get(roomCode)
+}

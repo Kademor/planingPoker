@@ -5,6 +5,7 @@ import { handleNewUser } from '../../../utils/user.ts'
 import { RoomInitFormContainer } from './style.ts'
 import { TRoomInit } from '../../../types/socketTypes.ts'
 import { useNavigate } from 'react-router'
+import { getFormDataObject } from '../../../utils/form.ts'
 const RoomInit = () => {
     const navigate = useNavigate()
     // const { context, setContext } = useContent()
@@ -13,13 +14,8 @@ const RoomInit = () => {
         formSubmissionEvent: FormEvent<HTMLFormElement>
     ) => {
         formSubmissionEvent.preventDefault()
-        const formData = new FormData(ref.current)
-        const formDataObject = {}
-        formData.forEach((value, key) => {
-            formDataObject[key] = value
-        })
         socket.on('createdRoom', (data) => handleRoomCreation(data, socket))
-        socket.emit('createRoom', formDataObject)
+        socket.emit('createRoom', getFormDataObject(ref))
     }
 
     const handleRoomCreation = (room: TRoomInit, socket: Socket) => {
@@ -41,7 +37,7 @@ const RoomInit = () => {
                 </label>
                 <label>
                     Poke game name (Optional)
-                    <input type="text" name={'name'} />n
+                    <input type="text" name={'name'} />
                 </label>
                 <label>
                     Description (Optional)

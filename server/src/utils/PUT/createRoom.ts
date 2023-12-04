@@ -42,6 +42,7 @@ export const createRoom = async (
 export const createRoomPUT = ({ socket, db, io }: TWithSocketData) => {
     socket.on(CREATE_ROOM, async (data: RoomCreationData) => {
         await createUser(data.user_name, db, io).then(async (userID) => {
+            console.log(data)
             if (userID) {
                 await createRoom(data, userID, db, io)
             }

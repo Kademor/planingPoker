@@ -6,6 +6,7 @@ import { Database } from 'sqlite3'
 import { createRoomPUT } from './utils/PUT/createRoom'
 import { TWithSocketData } from './types'
 import { requestRoomGET } from './utils/GET/requestRoom'
+import { createUserPUT } from './utils/PUT/createUser'
 async function main() {
     const db = await open({
         filename: './database/planningPoker.db',
@@ -37,6 +38,7 @@ async function main() {
         }
         //PUTS
         createRoomPUT(data)
+        createUserPUT(data)
         //GETS
         requestRoomGET(data)
     })

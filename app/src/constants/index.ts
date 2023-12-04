@@ -1,4 +1,5 @@
 export type TAppContext = {
+    user: string | undefined
     room: {
         users: string[]
         currentTicket:
@@ -12,6 +13,7 @@ export type TAppContext = {
 }
 
 export const DEFAULT_APP_CONTEXT: TAppContext = {
+    user: undefined,
     room: {
         users: [],
         currentTicket: undefined,
