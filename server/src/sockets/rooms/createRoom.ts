@@ -1,8 +1,9 @@
-import { generateRandomString } from '../randomString'
+import { generateRandomString } from '../../utils/randomString'
 import { REQUEST_ROOM_FROM_ID } from '../../const/queries'
-import { createUser } from './createUser'
+import { createUser } from '../users/createUser'
 import { TWithSocketData } from '../../types'
 import { CREATE_ROOM, CREATED_ROOM } from '../../const/events'
+import { dbPromise } from '../../db'
 
 type RoomCreationData = {
     name: string
@@ -39,8 +40,9 @@ export const createRoom = async (
     io.emit(CREATED_ROOM, roomData)
 }
 
-export const createRoomPUT = ({ socket, db, io }: TWithSocketData) => {
+export const createRoomPUT = ({ socket, io }: TWithSocketData) => {
     socket.on(CREATE_ROOM, async (data: RoomCreationData) => {
+        const db = await dbPromise
         await createUser(data.user_name, db, io).then(async (userID) => {
             console.log(data)
             if (userID) {
