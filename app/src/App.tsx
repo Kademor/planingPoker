@@ -1,10 +1,7 @@
-import RoomInit from './components/Room/RoomInit/RoomInit.tsx'
-import { Route, Routes } from 'react-router'
-import Room from './components/Room'
 import { useContent } from './components/Context'
 import { useEffect, useState } from 'react'
 import { socket } from './socket.ts'
-import UserCreation from './components/UserCreation'
+import AppRouter from './features/AppRouter'
 
 export default function App() {
     const { context, setContext } = useContent()
@@ -13,20 +10,11 @@ export default function App() {
         if (!isConnected) {
             socket.connect()
         }
-    })
+    }, [isConnected])
 
     return (
         <div className="App">
-            <Routes>
-                <Route index element={<RoomInit />} />
-                <Route path="/room/*" element={<Room />} />
-                <Route path="/createUser/*" element={<UserCreation />} />
-            </Routes>
-
-            {/*<ConnectionState isConnected={ isConnected } />*/}
-            {/*<Events events={ fooEvents } />*/}
-            {/*<ConnectionManager />*/}
-            {/*<MyForm />*/}
+            <AppRouter />
         </div>
     )
 }

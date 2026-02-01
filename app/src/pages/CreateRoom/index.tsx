@@ -1,12 +1,12 @@
 import { FormEvent, useRef } from 'react'
-import { socket } from '../../../socket.ts'
+import { socket } from '../../socket.ts'
 import { Socket } from 'socket.io-client'
-import { handleNewUser } from '../../../utils/user.ts'
+import { handleNewUser } from '../../utils/user.ts'
 import { RoomInitFormContainer } from './style.ts'
-import { TRoomInit } from '../../../types/socketTypes.ts'
+import { TRoomInit } from '../../types/socketTypes.ts'
 import { useNavigate } from 'react-router'
-import { getFormDataObject } from '../../../utils/form.ts'
-const RoomInit = () => {
+import { getFormDataObject } from '../../utils/form.ts'
+const Index = () => {
     const navigate = useNavigate()
     // const { context, setContext } = useContent()
     const ref: any = useRef()
@@ -49,4 +49,4 @@ const RoomInit = () => {
     )
 }
 
-export default RoomInit
+export default Index
