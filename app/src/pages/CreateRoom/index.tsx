@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router'
 import { getFormDataObject } from '../../utils/form.ts'
 const Index = () => {
     const navigate = useNavigate()
-    // const { context, setContext } = useContent()
     const ref: any = useRef()
     const submitForm = async (
         formSubmissionEvent: FormEvent<HTMLFormElement>
@@ -20,7 +19,7 @@ const Index = () => {
 
     const handleRoomCreation = (room: TRoomInit, socket: Socket) => {
         handleNewUser(
-            { roomName: room.site_string_id, cookie: room.user_cookie },
+            { roomName: room.site_string_id, cookie: room.cookie },
             socket
         )
         navigate(`/room/${room.site_string_id}`)

@@ -1,7 +1,6 @@
 import { Socket } from 'socket.io-client'
 import Cookies from 'universal-cookie'
 
-// await createUser(formSubmissionEvent.target[0].value, socket)
 export const createUser = async (username: string, socket: Socket) => {
     socket.on('createdUser', (data) => handleNewUser(data, socket))
     socket.emit('createUser', username)
